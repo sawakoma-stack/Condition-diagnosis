@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.0.0/tabler-icons.min.css">
+<!-- アイコンはインラインSVGで描画 -->
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 html{font-size:16px;}
@@ -97,8 +97,9 @@ body{
   transition:all .15s;background:#fff;
 }
 .checkbox.on{background:var(--brown);border-color:var(--brown);}
-.checkbox.on .ti{color:#fff;}
-.checkbox .ti{font-size:12px;color:transparent;}
+
+.checkbox svg{color:transparent;}
+.checkbox.on svg{color:#fff;}
 .item-text{font-size:13.5px;color:var(--brown);line-height:1.55;user-select:none;}
 
 /* ── ボタン ── */
@@ -175,6 +176,7 @@ body{
   border-radius:9px;padding:.55rem .2rem;text-align:center;
 }
 .score-cell-label{font-size:10px;color:var(--brown-mid);line-height:1.35;margin-bottom:3px;}
+.score-cell-label svg{width:13px;height:13px;}
 .score-cell-num{font-size:18px;font-weight:500;color:var(--brown);}
 .score-cell-max{font-size:10px;color:var(--brown-pale);}
 .score-hint{font-size:11px;color:var(--brown-pale);text-align:center;margin-bottom:1.25rem;}
@@ -271,10 +273,21 @@ body{
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
+/* SVGアイコン定義 */
+const ICONS = {
+  moon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>`,
+  books: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4m0 1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1z"/><path d="M9 4m0 1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1z"/><path d="M5 8h4"/><path d="M9 16h4"/><path d="M13.803 4.56l2.184-.53 5.253 12.942-2.184.53z"/><path d="M14.42 12.368l2.184-.53"/></svg>`,
+  briefcase: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-14a2 2 0 0 1-2-2z"/><path d="M8 7v-2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></svg>`,
+  clock: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l2.5 2.5"/></svg>`,
+  diamond: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13-10-13z"/><path d="M11 3l-4 6h10l-4-6"/><path d="M6 9l6 10 6-10"/></svg>`,
+  check: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>`,
+  info: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>`
+};
+
 const cats = [
   {
     id: 'body',
-    icon: 'ti-moon',
+    icon: 'moon',
     label: '疲弊タイプ',
     sub: '身体のサイン',
     priority: 1,
@@ -290,7 +303,7 @@ const cats = [
   },
   {
     id: 'action',
-    icon: 'ti-books',
+    icon: 'books',
     label: '頑張り方迷子タイプ',
     sub: '行動のパターン',
     priority: 2,
@@ -306,7 +319,7 @@ const cats = [
   },
   {
     id: 'work',
-    icon: 'ti-briefcase',
+    icon: 'briefcase',
     label: '成果停滞タイプ',
     sub: '仕事のパフォーマンス',
     priority: 3,
@@ -322,7 +335,7 @@ const cats = [
   },
   {
     id: 'life',
-    icon: 'ti-clock-hour-4',
+    icon: 'clock',
     label: '将来不安タイプ',
     sub: '人生・将来への不安',
     priority: 4,
@@ -338,7 +351,7 @@ const cats = [
   },
   {
     id: 'growth',
-    icon: 'ti-diamond',
+    icon: 'diamond',
     label: '成長欲求タイプ',
     sub: '理想・成長への意欲',
     priority: 5,
@@ -365,7 +378,7 @@ function buildSections() {
     sec.className = 'section';
     sec.innerHTML = `
       <div class="sec-header">
-        <div class="sec-icon"><i class="ti ${cat.icon}" aria-hidden="true"></i></div>
+        <div class="sec-icon">${ICONS[cat.icon]}</div>
         <div class="sec-info">
           <div class="sec-name">${cat.label}</div>
           <div class="sec-sub">${cat.sub}</div>
@@ -382,7 +395,7 @@ function buildSections() {
       div.setAttribute('role', 'checkbox');
       div.setAttribute('aria-checked', 'false');
       div.setAttribute('tabindex', '0');
-      div.innerHTML = `<div class="checkbox" id="cb-${cat.id}-${i}"><i class="ti ti-check"></i></div><div class="item-text">${txt}</div>`;
+      div.innerHTML = `<div class="checkbox" id="cb-${cat.id}-${i}">${ICONS.check}</div><div class="item-text">${txt}</div>`;
       div.onclick = () => toggle(cat.id, i, div);
       div.onkeydown = e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(cat.id, i, div); } };
       itemsEl.appendChild(div);
@@ -437,13 +450,13 @@ function showResult() {
   document.getElementById('main-card').innerHTML = `
     <div class="main-card">
       <div class="main-tag">最優先タイプ</div>
-      <div class="main-name"><i class="ti ${topCat.icon}" aria-hidden="true"></i>${topCat.label}</div>
+      <div class="main-name">${ICONS[topCat.icon]}${topCat.label}</div>
       <p class="main-desc">${topCat.desc}</p>
     </div>
   `;
 
   document.getElementById('priority-note').innerHTML = `
-    <i class="ti ti-info-circle" aria-hidden="true"></i>
+    ${ICONS.info}
     <span>${topCat.note}</span>
   `;
 
@@ -453,7 +466,7 @@ function showResult() {
     const cell = document.createElement('div');
     cell.className = 'score-cell';
     cell.innerHTML = `
-      <div class="score-cell-label"><i class="ti ${cat.icon}" aria-hidden="true" style="font-size:12px"></i><br>${cat.label.replace('タイプ', '')}</div>
+      <div class="score-cell-label">${ICONS[cat.icon]}<br>${cat.label.replace('タイプ', '')}</div>
       <div class="score-cell-num">${normalized[i]}</div>
       <div class="score-cell-max">/ 5</div>
     `;
@@ -474,7 +487,7 @@ function showResult() {
       const div = document.createElement('div');
       div.className = 'other-card';
       div.innerHTML = `
-        <i class="ti ${cat.icon} other-card-icon" aria-hidden="true"></i>
+        <span class="other-card-icon">${ICONS[cat.icon]}</span>
         <div class="other-card-name">${cat.label}</div>
         <div class="other-bar-wrap"><div class="other-bar" style="width:${pct}%"></div></div>
         <div class="other-pct">${pct}%</div>
