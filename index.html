@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>働くコンディション診断 | 働くカラダ創り部</title>
+<meta name="description" content="あなたの「働くコンディション」を5つの視点から診断します。今、何から整えるべきかが分かります。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.0.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;}
+body{
+  font-family:'Noto Sans JP',sans-serif;
+  background:#faf8f4;
+  color:#5c4a32;
+  min-height:100vh;
+}
+
+/* ── カラートークン ── */
+:root{
+  --bg:#faf8f4;
+  --card:#ffffff;
+  --card-soft:#f5f1ea;
+  --border:#e8e0d0;
+  --border-deep:#c9b99a;
+  --brown:#5c4a32;
+  --brown-mid:#9c856a;
+  --brown-light:#c9b99a;
+  --brown-pale:#d4c4aa;
+  --accent:#7a5c3a;
+}
+
+/* ── レイアウト ── */
+.page{max-width:600px;margin:0 auto;padding:2rem 1.25rem 4rem;}
+
+/* ── ヘッダー ── */
+.site-label{
+  font-size:11px;letter-spacing:.12em;color:var(--brown-mid);
+  text-align:center;margin-bottom:1.75rem;
+}
+.site-label span{
+  display:inline-block;padding:4px 14px;
+  border:1px solid var(--border-deep);border-radius:20px;
+}
+.quiz-header{text-align:center;margin-bottom:2rem;}
+.quiz-title{
+  font-size:22px;font-weight:500;color:var(--brown);
+  letter-spacing:.04em;line-height:1.4;margin-bottom:.5rem;
+}
+.quiz-sub{font-size:13px;color:var(--brown-mid);line-height:1.7;}
+
+/* ── プログレス ── */
+.progress-area{margin-bottom:1.75rem;}
+.progress-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--brown-light);border-radius:2px;transition:width .4s ease;width:0%;}
+.progress-label{font-size:11px;color:var(--brown-pale);text-align:right;margin-top:5px;}
+
+/* ── セクション ── */
+.section{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;margin-bottom:1rem;overflow:hidden;
+}
+.sec-header{
+  display:flex;align-items:center;gap:.75rem;
+  padding:.9rem 1.1rem;background:var(--card-soft);
+  border-bottom:1px solid var(--border);
+}
+.sec-icon{
+  width:34px;height:34px;border-radius:50%;
+  border:1px solid var(--border-deep);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--brown-mid);font-size:17px;flex-shrink:0;
+}
+.sec-info{flex:1;}
+.sec-name{font-size:14px;font-weight:500;color:var(--brown);}
+.sec-sub{font-size:11px;color:var(--brown-mid);margin-top:2px;}
+.sec-count{font-size:11px;color:var(--brown-pale);white-space:nowrap;}
+
+/* ── チェック項目 ── */
+.items{padding:.3rem 1rem .75rem;}
+.item{
+  display:flex;align-items:flex-start;gap:.75rem;
+  padding:.5rem 0;cursor:pointer;
+  border-bottom:1px solid var(--border);
+  transition:opacity .1s;
+}
+.item:last-child{border-bottom:none;}
+.item:active{opacity:.7;}
+.checkbox{
+  width:20px;height:20px;border-radius:5px;
+  border:1.5px solid var(--border-deep);
+  flex-shrink:0;margin-top:1px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;background:#fff;
+}
+.checkbox.on{background:var(--brown);border-color:var(--brown);}
+.checkbox.on .ti{color:#fff;}
+.checkbox .ti{font-size:12px;color:transparent;}
+.item-text{font-size:13.5px;color:var(--brown);line-height:1.55;user-select:none;}
+
+/* ── ボタン ── */
+.btn-area{text-align:center;padding:1.5rem 0 .5rem;}
+.btn-primary{
+  display:inline-block;
+  background:var(--brown);color:#faf8f4;
+  border:none;border-radius:28px;
+  padding:.8rem 3rem;font-size:14px;font-weight:500;
+  letter-spacing:.06em;cursor:pointer;
+  font-family:'Noto Sans JP',sans-serif;
+  transition:background .15s;
+}
+.btn-primary:hover{background:var(--accent);}
+.btn-secondary{
+  display:inline-block;
+  background:transparent;color:var(--brown-mid);
+  border:1px solid var(--border-deep);border-radius:28px;
+  padding:.65rem 2.25rem;font-size:13px;cursor:pointer;
+  font-family:'Noto Sans JP',sans-serif;
+  transition:background .15s;margin-top:.75rem;
+}
+.btn-secondary:hover{background:var(--card-soft);}
+
+/* ── 結果画面 ── */
+.result{display:none;}
+.res-header{text-align:center;margin-bottom:1.5rem;}
+.res-title{font-size:20px;font-weight:500;color:var(--brown);margin-bottom:.35rem;}
+.res-sub{font-size:13px;color:var(--brown-mid);}
+
+/* メインカード */
+.main-card{
+  background:var(--card);border:1px solid var(--border-deep);
+  border-radius:14px;padding:1.35rem 1.35rem 1.25rem;
+  margin-bottom:.85rem;
+}
+.main-tag{
+  display:inline-block;padding:3px 13px;border-radius:20px;
+  font-size:11px;font-weight:500;letter-spacing:.05em;
+  margin-bottom:.65rem;background:var(--brown);color:#faf8f4;
+}
+.main-name{
+  font-size:17px;font-weight:500;color:var(--brown);
+  display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem;
+}
+.main-name .ti{font-size:17px;color:var(--brown-mid);}
+.main-desc{font-size:13px;color:var(--brown-mid);line-height:1.75;}
+
+/* 優先度ノート */
+.priority-note{
+  font-size:12px;color:var(--brown-mid);
+  background:var(--card-soft);border:1px solid var(--border);
+  border-radius:9px;padding:.65rem 1rem;
+  margin-bottom:1.25rem;line-height:1.65;
+  display:flex;align-items:flex-start;gap:.4rem;
+}
+.priority-note .ti{font-size:14px;color:var(--border-deep);flex-shrink:0;margin-top:1px;}
+
+/* レーダー */
+.radar-wrap{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:1.1rem 1rem;margin-bottom:1rem;
+}
+.radar-label{font-size:11px;color:var(--brown-pale);text-align:center;margin-bottom:.75rem;letter-spacing:.04em;}
+.radar-canvas-wrap{position:relative;width:100%;height:240px;}
+
+/* スコア行 */
+.score-row{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:6px;margin-bottom:.4rem;
+}
+.score-cell{
+  background:var(--card-soft);border:1px solid var(--border);
+  border-radius:9px;padding:.55rem .2rem;text-align:center;
+}
+.score-cell-label{font-size:10px;color:var(--brown-mid);line-height:1.35;margin-bottom:3px;}
+.score-cell-num{font-size:18px;font-weight:500;color:var(--brown);}
+.score-cell-max{font-size:10px;color:var(--brown-pale);}
+.score-hint{font-size:11px;color:var(--brown-pale);text-align:center;margin-bottom:1.25rem;}
+
+/* その他カード */
+.other-section-label{font-size:12px;color:var(--brown-mid);margin-bottom:.5rem;padding-left:2px;}
+.other-card{
+  background:var(--card-soft);border:1px solid var(--border);
+  border-radius:10px;padding:.75rem 1rem;
+  margin-bottom:.5rem;
+  display:flex;align-items:center;gap:.75rem;
+}
+.other-card-icon{font-size:16px;color:var(--brown-mid);}
+.other-card-name{font-size:13px;font-weight:500;color:var(--brown);min-width:100px;}
+.other-bar-wrap{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.other-bar{height:100%;background:var(--brown-light);border-radius:2px;}
+.other-pct{font-size:11px;color:var(--brown-mid);min-width:30px;text-align:right;}
+
+/* フッター */
+.footer{text-align:center;margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--border);}
+.footer-text{font-size:11px;color:var(--brown-pale);line-height:1.8;}
+
+/* ── モバイル対応 ── */
+@media(max-width:480px){
+  .page{padding:1.5rem 1rem 3rem;}
+  .quiz-title{font-size:18px;}
+  .score-cell-num{font-size:16px;}
+}
+</style>
+</head>
+<body>
+<main class="page" role="main">
+
+  <!-- クイズ画面 -->
+  <section id="quiz" aria-label="コンディション診断">
+    <p class="site-label"><span>働くカラダ創り部</span></p>
+    <header class="quiz-header">
+      <h1 class="quiz-title">働くコンディション診断</h1>
+      <p class="quiz-sub">あてはまる項目にチェックしてください<br>（複数選択OK）</p>
+    </header>
+
+    <div class="progress-area" aria-label="進捗">
+      <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="25">
+        <div class="progress-fill" id="prog"></div>
+      </div>
+      <div class="progress-label" id="prog-label">0 / 25</div>
+    </div>
+
+    <div id="sections"></div>
+
+    <div class="btn-area">
+      <button class="btn-primary" onclick="showResult()">診断結果を見る</button>
+    </div>
+  </section>
+
+  <!-- 結果画面 -->
+  <section class="result" id="result" aria-label="診断結果">
+    <header class="res-header">
+      <h2 class="res-title">診断結果</h2>
+      <p class="res-sub">今のあなたに最も必要なアプローチです</p>
+    </header>
+
+    <div id="main-card"></div>
+    <div class="priority-note" id="priority-note"></div>
+
+    <div class="radar-wrap">
+      <div class="radar-label">コンディションマップ</div>
+      <div class="radar-canvas-wrap">
+        <canvas id="radar" role="img" aria-label="5タイプのレーダーチャート"></canvas>
+      </div>
+    </div>
+
+    <div class="score-row" id="score-row"></div>
+    <p class="score-hint">各タイプのチェック数を5点満点に換算して表示しています</p>
+
+    <div>
+      <p class="other-section-label">その他の傾向</p>
+      <div id="other-cards"></div>
+    </div>
+
+    <div class="btn-area">
+      <button class="btn-secondary" onclick="resetQuiz()">もう一度やり直す</button>
+    </div>
+
+    <footer class="footer">
+      <p class="footer-text">
+        働くカラダ創り部<br>
+        部長：さわこま
+      </p>
+    </footer>
+  </section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+const cats = [
+  {
+    id: 'body',
+    icon: 'ti-moon',
+    label: '疲弊タイプ',
+    sub: '身体のサイン',
+    priority: 1,
+    items: [
+      '朝から疲れている',
+      '休日が寝て終わる',
+      '午後になると集中力が落ちる',
+      '休んでも回復しない',
+      '「年齢だから仕方ない」と思っている'
+    ],
+    desc: 'カラダのコンディションが土台にあります。まずここを整えることが、他のすべての出発点です。疲れない身体をつくる仕組みを知ることで、生活全体が変わり始めます。',
+    note: '身体の疲弊が見られる場合、他の課題は土台が整ってから取り組むと効果が出やすくなります。'
+  },
+  {
+    id: 'action',
+    icon: 'ti-books',
+    label: '頑張り方迷子タイプ',
+    sub: '行動のパターン',
+    priority: 2,
+    items: [
+      '本やYouTubeで勉強している',
+      '良いと言われることは試している',
+      'でも続かない',
+      '自分に合う方法が分からない',
+      '情報が多すぎて混乱している'
+    ],
+    desc: '努力の方向性が定まっていない状態です。自分の身体に合ったロジックを見つけることで、同じ努力が確実な成果につながるようになります。',
+    note: 'カラダのサインが落ち着いてきたら、自分に合う行動の仕組みをつくっていきましょう。'
+  },
+  {
+    id: 'work',
+    icon: 'ti-briefcase',
+    label: '成果停滞タイプ',
+    sub: '仕事のパフォーマンス',
+    priority: 3,
+    items: [
+      '頑張っているのに評価されない',
+      'もっと力を発揮できる気がする',
+      '成果が安定しない',
+      '波が激しい',
+      'モチベーション頼みになっている'
+    ],
+    desc: 'コンディションの土台が安定すると、仕事のパフォーマンスのムラが減っていきます。再現性のある働き方が、安定した成果への近道です。',
+    note: '身体と行動の仕組みが整うと、仕事の成果に直結してきます。'
+  },
+  {
+    id: 'life',
+    icon: 'ti-clock-hour-4',
+    label: '将来不安タイプ',
+    sub: '人生・将来への不安',
+    priority: 4,
+    items: [
+      'このまま歳を取りたくない',
+      '今の働き方を続けられる気がしない',
+      '本当はもっと挑戦したい',
+      '時間もお金も余裕がない',
+      '何を変えればいいのか分からない'
+    ],
+    desc: '将来への漠然とした不安は、「何から変えればいいか分からない」という状態から来ています。一つひとつ土台を整えていくことで、視界が開けてきます。',
+    note: '将来への不安は、日々のコンディションが整うことで自然と和らいでいくことが多いです。'
+  },
+  {
+    id: 'growth',
+    icon: 'ti-diamond',
+    label: '成長欲求タイプ',
+    sub: '理想・成長への意欲',
+    priority: 5,
+    items: [
+      '自分をもっと成長させたい',
+      '再現性を身につけたい',
+      '人に教えられるようになりたい',
+      'ロジックで説明できるようになりたい',
+      '根拠がある自信が欲しい'
+    ],
+    desc: '高い意欲と明確な方向性をすでにお持ちです。再現性とロジックを武器にすることで、自分だけでなく周りにも影響を与えられる存在になれます。',
+    note: 'この段階まで来たら、学びを体系化して人に伝える力を磨いていきましょう。'
+  }
+];
+
+const checks = {};
+cats.forEach(c => { checks[c.id] = new Set(); });
+const TOTAL = cats.reduce((a, c) => a + c.items.length, 0);
+
+function buildSections() {
+  const el = document.getElementById('sections');
+  cats.forEach(cat => {
+    const sec = document.createElement('div');
+    sec.className = 'section';
+    sec.innerHTML = `
+      <div class="sec-header">
+        <div class="sec-icon"><i class="ti ${cat.icon}" aria-hidden="true"></i></div>
+        <div class="sec-info">
+          <div class="sec-name">${cat.label}</div>
+          <div class="sec-sub">${cat.sub}</div>
+        </div>
+        <div class="sec-count" id="cnt-${cat.id}">0 / ${cat.items.length}</div>
+      </div>
+      <div class="items" id="items-${cat.id}"></div>
+    `;
+    el.appendChild(sec);
+    const itemsEl = document.getElementById('items-' + cat.id);
+    cat.items.forEach((txt, i) => {
+      const div = document.createElement('div');
+      div.className = 'item';
+      div.setAttribute('role', 'checkbox');
+      div.setAttribute('aria-checked', 'false');
+      div.setAttribute('tabindex', '0');
+      div.innerHTML = `<div class="checkbox" id="cb-${cat.id}-${i}"><i class="ti ti-check"></i></div><div class="item-text">${txt}</div>`;
+      div.onclick = () => toggle(cat.id, i, div);
+      div.onkeydown = e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(cat.id, i, div); } };
+      itemsEl.appendChild(div);
+    });
+  });
+}
+
+function toggle(catId, idx, divEl) {
+  const s = checks[catId];
+  if (s.has(idx)) s.delete(idx); else s.add(idx);
+  const cb = document.getElementById('cb-' + catId + '-' + idx);
+  cb.classList.toggle('on', s.has(idx));
+  divEl.setAttribute('aria-checked', s.has(idx) ? 'true' : 'false');
+  const cat = cats.find(c => c.id === catId);
+  document.getElementById('cnt-' + catId).textContent = s.size + ' / ' + cat.items.length;
+  updateProgress();
+}
+
+function updateProgress() {
+  let total = 0;
+  Object.values(checks).forEach(s => total += s.size);
+  const pct = Math.round(total / TOTAL * 100);
+  const fill = document.getElementById('prog');
+  fill.style.width = pct + '%';
+  fill.parentElement.setAttribute('aria-valuenow', total);
+  document.getElementById('prog-label').textContent = total + ' / ' + TOTAL;
+}
+
+function getPriority() {
+  for (let p = 1; p <= 5; p++) {
+    const cat = cats.find(c => c.priority === p);
+    if (checks[cat.id].size >= 2) return cat;
+  }
+  const ranked = cats.map(c => ({
+    cat: c,
+    pct: c.items.length > 0 ? checks[c.id].size / c.items.length : 0
+  })).sort((a, b) => b.pct - a.pct || a.cat.priority - b.cat.priority);
+  return ranked[0].cat;
+}
+
+function showResult() {
+  document.getElementById('quiz').style.display = 'none';
+  const res = document.getElementById('result');
+  res.style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  const scores = cats.map(c => checks[c.id].size);
+  const pcts = cats.map((c, i) => c.items.length > 0 ? scores[i] / c.items.length : 0);
+  const normalized = pcts.map(p => Math.round(p * 5));
+  const topCat = getPriority();
+
+  document.getElementById('main-card').innerHTML = `
+    <div class="main-card">
+      <div class="main-tag">最優先タイプ</div>
+      <div class="main-name"><i class="ti ${topCat.icon}" aria-hidden="true"></i>${topCat.label}</div>
+      <p class="main-desc">${topCat.desc}</p>
+    </div>
+  `;
+
+  document.getElementById('priority-note').innerHTML = `
+    <i class="ti ti-info-circle" aria-hidden="true"></i>
+    <span>${topCat.note}</span>
+  `;
+
+  const scoreEl = document.getElementById('score-row');
+  scoreEl.innerHTML = '';
+  cats.forEach((cat, i) => {
+    const cell = document.createElement('div');
+    cell.className = 'score-cell';
+    cell.innerHTML = `
+      <div class="score-cell-label"><i class="ti ${cat.icon}" aria-hidden="true" style="font-size:12px"></i><br>${cat.label.replace('タイプ', '')}</div>
+      <div class="score-cell-num">${normalized[i]}</div>
+      <div class="score-cell-max">/ 5</div>
+    `;
+    scoreEl.appendChild(cell);
+  });
+
+  const othEl = document.getElementById('other-cards');
+  othEl.innerHTML = '';
+  cats
+    .filter(c => c.id !== topCat.id)
+    .sort((a, b) => {
+      const ai = cats.indexOf(a), bi = cats.indexOf(b);
+      return pcts[bi] - pcts[ai];
+    })
+    .forEach(cat => {
+      const i = cats.indexOf(cat);
+      const pct = Math.round(pcts[i] * 100);
+      const div = document.createElement('div');
+      div.className = 'other-card';
+      div.innerHTML = `
+        <i class="ti ${cat.icon} other-card-icon" aria-hidden="true"></i>
+        <div class="other-card-name">${cat.label}</div>
+        <div class="other-bar-wrap"><div class="other-bar" style="width:${pct}%"></div></div>
+        <div class="other-pct">${pct}%</div>
+      `;
+      othEl.appendChild(div);
+    });
+
+  drawRadar(normalized);
+}
+
+let radarChart = null;
+function drawRadar(data) {
+  if (radarChart) { radarChart.destroy(); radarChart = null; }
+  radarChart = new Chart(document.getElementById('radar'), {
+    type: 'radar',
+    data: {
+      labels: cats.map(c => c.label.replace('タイプ', '')),
+      datasets: [{
+        label: 'スコア',
+        data: data,
+        backgroundColor: 'rgba(201,185,154,.18)',
+        borderColor: '#c9b99a',
+        borderWidth: 1.5,
+        pointBackgroundColor: '#9c856a',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 1.5,
+        pointRadius: 4,
+        pointHoverRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        r: {
+          min: 0, max: 5,
+          ticks: {
+            stepSize: 1,
+            color: '#c9b99a',
+            backdropColor: 'transparent',
+            font: { size: 9 }
+          },
+          grid: { color: 'rgba(201,185,154,.3)' },
+          angleLines: { color: 'rgba(201,185,154,.3)' },
+          pointLabels: {
+            font: { size: 11, weight: '500', family: "'Noto Sans JP', sans-serif" },
+            color: '#9c856a'
+          }
+        }
+      }
+    }
+  });
+}
+
+function resetQuiz() {
+  cats.forEach(c => {
+    checks[c.id].clear();
+    c.items.forEach((_, i) => {
+      const cb = document.getElementById('cb-' + c.id + '-' + i);
+      if (cb) cb.classList.remove('on');
+      const item = cb ? cb.parentElement : null;
+      if (item) item.setAttribute('aria-checked', 'false');
+    });
+    document.getElementById('cnt-' + c.id).textContent = '0 / ' + c.items.length;
+  });
+  updateProgress();
+  document.getElementById('quiz').style.display = 'block';
+  document.getElementById('result').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+buildSections();
+</script>
+</body>
+</html>
