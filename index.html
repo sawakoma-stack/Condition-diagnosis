@@ -4,372 +4,254 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>働くコンディション診断 | 働くカラダ創り部</title>
-<meta name="description" content="あなたの「働くコンディション」を5つの視点から診断します。今、何から整えるべきかが分かります。">
+<meta name="description" content="あなたは今、どのレンジャー？5つの視点から今のコンディションを診断します。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
-<!-- アイコンはインラインSVGで描画 -->
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-html{font-size:16px;}
-body{
-  font-family:'Noto Sans JP',sans-serif;
-  background:#faf8f4;
-  color:#5c4a32;
-  min-height:100vh;
-}
-
-/* ── カラートークン ── */
+body{font-family:'Noto Sans JP',sans-serif;background:#faf8f4;color:#5c4a32;min-height:100vh;}
 :root{
-  --bg:#faf8f4;
-  --card:#ffffff;
-  --card-soft:#f5f1ea;
-  --border:#e8e0d0;
-  --border-deep:#c9b99a;
-  --brown:#5c4a32;
-  --brown-mid:#9c856a;
-  --brown-light:#c9b99a;
-  --brown-pale:#d4c4aa;
-  --accent:#7a5c3a;
+  --bg:#faf8f4;--card:#fff;--soft:#f5f1ea;--border:#e8e0d0;
+  --deep:#c9b99a;--brown:#5c4a32;--mid:#9c856a;--pale:#d4c4aa;--accent:#7a5c3a;
 }
-
-/* ── レイアウト ── */
 .page{max-width:600px;margin:0 auto;padding:2rem 1.25rem 4rem;}
 
-/* ── ヘッダー ── */
-.site-label{
-  font-size:11px;letter-spacing:.12em;color:var(--brown-mid);
-  text-align:center;margin-bottom:1.75rem;
-}
-.site-label span{
-  display:inline-block;padding:4px 14px;
-  border:1px solid var(--border-deep);border-radius:20px;
-}
-.quiz-header{text-align:center;margin-bottom:2rem;}
-.quiz-title{
-  font-size:22px;font-weight:500;color:var(--brown);
-  letter-spacing:.04em;line-height:1.4;margin-bottom:.5rem;
-}
-.quiz-sub{font-size:13px;color:var(--brown-mid);line-height:1.7;}
+.hero{background:var(--soft);border:1px solid var(--border);border-radius:20px;margin-bottom:1.75rem;padding:1.5rem 1rem 0;text-align:center;overflow:hidden;}
+.hero-brand{font-size:11px;letter-spacing:.12em;color:var(--mid);margin-bottom:.65rem;}
+.hero-brand span{display:inline-block;padding:3px 14px;border:1px solid var(--deep);border-radius:20px;background:#fff;}
+.hero-eyebrow{font-size:12px;letter-spacing:.05em;color:var(--mid);margin-bottom:.35rem;}
+.hero-main{font-size:21px;font-weight:500;color:var(--brown);letter-spacing:.04em;line-height:1.4;margin-bottom:.3rem;}
+.hero-main em{font-style:normal;color:#d9392b;}
+.hero-catch{font-size:14px;color:var(--mid);line-height:1.6;margin-bottom:1.1rem;}
+.hero-rangers{display:flex;justify-content:center;align-items:flex-end;margin:0 -1rem;height:90px;}
+.hero-ranger{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;transition:transform .2s;}
+.hero-ranger:hover{transform:translateY(-6px);}
+.hero-ranger svg{display:block;}
+.quiz-header{text-align:center;margin-bottom:1.25rem;}
+.quiz-title{font-size:14px;font-weight:500;color:var(--brown);letter-spacing:.04em;margin-bottom:.2rem;}
+.quiz-sub{font-size:13px;color:var(--mid);line-height:1.7;}
 
-/* ── プログレス ── */
-.progress-area{margin-bottom:1.75rem;}
-.progress-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
-.progress-fill{height:100%;background:var(--brown-light);border-radius:2px;transition:width .4s ease;width:0%;}
-.progress-label{font-size:11px;color:var(--brown-pale);text-align:right;margin-top:5px;}
+/* プログレス */
+.prog-area{margin-bottom:1.75rem;}
+.prog-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;background:var(--deep);border-radius:2px;transition:width .4s ease;width:0%;}
+.prog-lbl{font-size:11px;color:var(--pale);text-align:right;margin-top:5px;}
 
-/* ── セクション ── */
-.section{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:14px;margin-bottom:1rem;overflow:hidden;
-}
-.sec-header{
-  display:flex;align-items:center;gap:.75rem;
-  padding:.9rem 1.1rem;background:var(--card-soft);
-  border-bottom:1px solid var(--border);
-}
-.sec-icon{
-  width:34px;height:34px;border-radius:50%;
-  border:1px solid var(--border-deep);
-  display:flex;align-items:center;justify-content:center;
-  color:var(--brown-mid);font-size:17px;flex-shrink:0;
-}
-.sec-info{flex:1;}
-.sec-name{font-size:14px;font-weight:500;color:var(--brown);}
-.sec-sub{font-size:11px;color:var(--brown-mid);margin-top:2px;}
-.sec-count{font-size:11px;color:var(--brown-pale);white-space:nowrap;}
-
-/* ── チェック項目 ── */
-.items{padding:.3rem 1rem .75rem;}
-.item{
-  display:flex;align-items:flex-start;gap:.75rem;
-  padding:.5rem 0;cursor:pointer;
-  border-bottom:1px solid var(--border);
-  transition:opacity .1s;
-}
+/* セクション */
+.section{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:1rem;overflow:hidden;}
+.sec-hdr{display:flex;align-items:center;gap:.75rem;padding:.8rem 1.1rem;background:var(--soft);border-bottom:1px solid var(--border);}
+.sec-theme{font-size:13px;font-weight:500;color:var(--brown);}
+.sec-count{font-size:11px;color:var(--pale);white-space:nowrap;margin-left:auto;}
+.items{padding:.25rem 1rem .7rem;}
+.item{display:flex;align-items:flex-start;gap:.75rem;padding:.5rem 0;cursor:pointer;border-bottom:1px solid var(--border);transition:opacity .1s;}
 .item:last-child{border-bottom:none;}
 .item:active{opacity:.7;}
-.checkbox{
-  width:20px;height:20px;border-radius:5px;
-  border:1.5px solid var(--border-deep);
-  flex-shrink:0;margin-top:1px;
-  display:flex;align-items:center;justify-content:center;
-  transition:all .15s;background:#fff;
-}
-.checkbox.on{background:var(--brown);border-color:var(--brown);}
-
-.checkbox svg{color:transparent;}
-.checkbox.on svg{color:#fff;}
+.cb{width:20px;height:20px;border-radius:5px;border:1.5px solid var(--deep);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;background:#fff;transition:all .15s;}
+.cb svg{color:transparent;width:12px;height:12px;}
+.cb.on svg{color:#fff;}
 .item-text{font-size:13.5px;color:var(--brown);line-height:1.55;user-select:none;}
 
-/* ── ボタン ── */
+/* ボタン */
 .btn-area{text-align:center;padding:1.5rem 0 .5rem;}
-.btn-primary{
-  display:inline-block;
-  background:var(--brown);color:#faf8f4;
-  border:none;border-radius:28px;
-  padding:.8rem 3rem;font-size:14px;font-weight:500;
-  letter-spacing:.06em;cursor:pointer;
-  font-family:'Noto Sans JP',sans-serif;
-  transition:background .15s;
-}
+.btn-primary{display:inline-block;background:var(--brown);color:#faf8f4;border:none;border-radius:28px;padding:.8rem 3rem;font-size:14px;font-weight:500;letter-spacing:.06em;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:background .15s;}
 .btn-primary:hover{background:var(--accent);}
-.btn-secondary{
-  display:inline-block;
-  background:transparent;color:var(--brown-mid);
-  border:1px solid var(--border-deep);border-radius:28px;
-  padding:.65rem 2.25rem;font-size:13px;cursor:pointer;
-  font-family:'Noto Sans JP',sans-serif;
-  transition:background .15s;margin-top:.75rem;
-}
-.btn-secondary:hover{background:var(--card-soft);}
+.btn-secondary{display:inline-block;background:transparent;color:var(--mid);border:1px solid var(--deep);border-radius:28px;padding:.65rem 2.25rem;font-size:13px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:background .15s;margin-top:.75rem;}
+.btn-secondary:hover{background:var(--soft);}
 
-/* ── 結果画面 ── */
+/* 結果画面 */
 .result{display:none;}
-.res-header{text-align:center;margin-bottom:1.5rem;}
-.res-title{font-size:20px;font-weight:500;color:var(--brown);margin-bottom:.35rem;}
-.res-sub{font-size:13px;color:var(--brown-mid);}
+.res-hdr{text-align:center;margin-bottom:1.25rem;}
+.res-eyebrow{font-size:11px;letter-spacing:.1em;color:var(--mid);margin-bottom:.4rem;}
+.res-title{font-size:20px;font-weight:500;color:var(--brown);margin-bottom:.25rem;}
+.res-sub{font-size:13px;color:var(--mid);}
 
-/* メインカード */
-.main-card{
-  background:var(--card);border:1px solid var(--border-deep);
-  border-radius:14px;padding:1.35rem 1.35rem 1.25rem;
-  margin-bottom:.85rem;
-}
-.main-tag{
-  display:inline-block;padding:3px 13px;border-radius:20px;
-  font-size:11px;font-weight:500;letter-spacing:.05em;
-  margin-bottom:.65rem;background:var(--brown);color:#faf8f4;
-}
-.main-name{
-  font-size:17px;font-weight:500;color:var(--brown);
-  display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem;
-}
-.main-name .ti{font-size:17px;color:var(--brown-mid);}
-.main-desc{font-size:13px;color:var(--brown-mid);line-height:1.75;}
-
-/* 優先度ノート */
-.priority-note{
-  font-size:12px;color:var(--brown-mid);
-  background:var(--card-soft);border:1px solid var(--border);
-  border-radius:9px;padding:.65rem 1rem;
-  margin-bottom:1.25rem;line-height:1.65;
-  display:flex;align-items:flex-start;gap:.4rem;
-}
-.priority-note .ti{font-size:14px;color:var(--border-deep);flex-shrink:0;margin-top:1px;}
+/* レンジャーカード */
+.ranger-card{border-radius:16px;overflow:hidden;margin-bottom:1rem;border:1.5px solid var(--deep);}
+.ranger-card-top{padding:1.1rem 1.25rem 1rem;display:flex;align-items:center;gap:1rem;}
+.ranger-svg-wrap{flex-shrink:0;}
+.ranger-card-info{flex:1;}
+.ranger-tag{display:inline-block;padding:3px 12px;border-radius:20px;font-size:11px;font-weight:500;letter-spacing:.04em;margin-bottom:.45rem;}
+.ranger-copy{font-size:18px;font-weight:500;line-height:1.4;margin-bottom:.2rem;}
+.ranger-sub{font-size:12px;opacity:.7;}
+.ranger-body{padding:.9rem 1.25rem 1.1rem;background:var(--card);border-top:1px solid var(--border);}
+.ranger-row{display:grid;grid-template-columns:1fr 1fr;gap:.6rem .9rem;margin-bottom:.7rem;}
+.ranger-advice-row{margin-bottom:0;}
+.ranger-section-label{font-size:10px;letter-spacing:.08em;color:var(--mid);margin-bottom:.3rem;}
+.ranger-section-val{font-size:13px;color:var(--brown);line-height:1.6;}
+.ranger-kws{display:flex;flex-wrap:wrap;gap:5px;}
+.ranger-kw{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;background:var(--soft);border:1px solid var(--border);color:var(--mid);}
 
 /* レーダー */
-.radar-wrap{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:14px;padding:1.1rem 1rem;margin-bottom:1rem;
-}
-.radar-label{font-size:11px;color:var(--brown-pale);text-align:center;margin-bottom:.75rem;letter-spacing:.04em;}
-.radar-canvas-wrap{position:relative;width:100%;height:240px;}
+.radar-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem 1rem .75rem;margin-bottom:1rem;}
+.radar-lbl{font-size:11px;color:var(--pale);text-align:center;margin-bottom:.6rem;letter-spacing:.04em;}
+.radar-canvas-wrap{position:relative;width:100%;height:230px;}
 
-/* スコア行 */
-.score-row{
-  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
-  gap:6px;margin-bottom:.4rem;
-}
-.score-cell{
-  background:var(--card-soft);border:1px solid var(--border);
-  border-radius:9px;padding:.55rem .2rem;text-align:center;
-}
-.score-cell-label{font-size:10px;color:var(--brown-mid);line-height:1.35;margin-bottom:3px;}
-.score-cell-label svg{width:13px;height:13px;}
-.score-cell-num{font-size:18px;font-weight:500;color:var(--brown);}
-.score-cell-max{font-size:10px;color:var(--brown-pale);}
-.score-hint{font-size:11px;color:var(--brown-pale);text-align:center;margin-bottom:1.25rem;}
+/* スコア */
+.score-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin-bottom:.4rem;}
+.score-cell{background:var(--soft);border:1px solid var(--border);border-radius:9px;padding:.5rem .2rem;text-align:center;}
+.score-dot{width:8px;height:8px;border-radius:50%;margin:0 auto 4px;}
+.score-lbl{font-size:9.5px;color:var(--mid);line-height:1.3;margin-bottom:3px;}
+.score-num{font-size:17px;font-weight:500;color:var(--brown);}
+.score-max{font-size:9px;color:var(--pale);}
+.score-hint{font-size:11px;color:var(--pale);text-align:center;margin-bottom:1.1rem;}
 
-/* その他カード */
-.other-section-label{font-size:12px;color:var(--brown-mid);margin-bottom:.5rem;padding-left:2px;}
-.other-card{
-  background:var(--card-soft);border:1px solid var(--border);
-  border-radius:10px;padding:.75rem 1rem;
-  margin-bottom:.5rem;
-  display:flex;align-items:center;gap:.75rem;
-}
-.other-card-icon{font-size:16px;color:var(--brown-mid);}
-.other-card-name{font-size:13px;font-weight:500;color:var(--brown);min-width:100px;}
+/* その他 */
+.other-lbl{font-size:12px;color:var(--mid);margin-bottom:.5rem;padding-left:2px;}
+.other-card{background:var(--soft);border:1px solid var(--border);border-radius:10px;padding:.7rem 1rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.75rem;}
+.other-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.other-name{font-size:13px;font-weight:500;color:var(--brown);min-width:110px;}
 .other-bar-wrap{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
-.other-bar{height:100%;background:var(--brown-light);border-radius:2px;}
-.other-pct{font-size:11px;color:var(--brown-mid);min-width:30px;text-align:right;}
+.other-bar{height:100%;border-radius:2px;}
+.other-pct{font-size:11px;color:var(--mid);min-width:30px;text-align:right;}
 
 /* フッター */
 .footer{text-align:center;margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--border);}
-.footer-text{font-size:11px;color:var(--brown-pale);line-height:1.8;}
+.footer-text{font-size:11px;color:var(--pale);line-height:1.8;}
 
-/* ── モバイル対応 ── */
 @media(max-width:480px){
   .page{padding:1.5rem 1rem 3rem;}
   .quiz-title{font-size:18px;}
-  .score-cell-num{font-size:16px;}
+  .ranger-row{grid-template-columns:1fr;}
+  .ranger-copy{font-size:16px;}
 }
 </style>
 </head>
 <body>
-<main class="page" role="main">
+<main class="page">
 
-  <!-- クイズ画面 -->
-  <section id="quiz" aria-label="コンディション診断">
-    <p class="site-label"><span>働くカラダ創り部</span></p>
-    <header class="quiz-header">
-      <h1 class="quiz-title">働くコンディション診断</h1>
-      <p class="quiz-sub">あてはまる項目にチェックしてください<br>（複数選択OK）</p>
-    </header>
+<section id="quiz">
+  <div class="hero">
+    <p class="hero-brand"><span>とにかく元気に働きたいんジャー</span></p>
+    <p class="hero-eyebrow">カラダを知って整える</p>
+    <h1 class="hero-main">働くコンディション診断</h1>
+    <p class="hero-catch">あてはまる項目にチェックしてください（複数OK）</p>
+    <div class="hero-rangers" id="hero-rangers"></div>
+  </div>
+  <header class="quiz-header">
+    <p class="quiz-title">全25問・あなたはどのレンジャー？</p>
+  </header>
+  <div class="prog-area">
+    <div class="prog-bar"><div class="prog-fill" id="prog"></div></div>
+    <div class="prog-lbl" id="prog-lbl">0 / 25</div>
+  </div>
+  <div id="sections"></div>
+  <div class="btn-area">
+    <button class="btn-primary" onclick="showResult()">診断結果を見る</button>
+  </div>
+</section>
 
-    <div class="progress-area" aria-label="進捗">
-      <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="25">
-        <div class="progress-fill" id="prog"></div>
-      </div>
-      <div class="progress-label" id="prog-label">0 / 25</div>
-    </div>
-
-    <div id="sections"></div>
-
-    <div class="btn-area">
-      <button class="btn-primary" onclick="showResult()">診断結果を見る</button>
-    </div>
-  </section>
-
-  <!-- 結果画面 -->
-  <section class="result" id="result" aria-label="診断結果">
-    <header class="res-header">
-      <h2 class="res-title">診断結果</h2>
-      <p class="res-sub">今のあなたに最も必要なアプローチです</p>
-    </header>
-
-    <div id="main-card"></div>
-    <div class="priority-note" id="priority-note"></div>
-
-    <div class="radar-wrap">
-      <div class="radar-label">コンディションマップ</div>
-      <div class="radar-canvas-wrap">
-        <canvas id="radar" role="img" aria-label="5タイプのレーダーチャート"></canvas>
-      </div>
-    </div>
-
-    <div class="score-row" id="score-row"></div>
-    <p class="score-hint">各タイプのチェック数を5点満点に換算して表示しています</p>
-
-    <div>
-      <p class="other-section-label">その他の傾向</p>
-      <div id="other-cards"></div>
-    </div>
-
-    <div class="btn-area">
-      <button class="btn-secondary" onclick="resetQuiz()">もう一度やり直す</button>
-    </div>
-
-    <footer class="footer">
-      <p class="footer-text">
-        働くカラダ創り部<br>
-        部長：さわこま
-      </p>
-    </footer>
-  </section>
+<section class="result" id="result">
+  <header class="res-hdr">
+    <p class="res-eyebrow">あなたは…</p>
+    <h2 class="res-title">診断結果</h2>
+    <p class="res-sub">今のカラダの状態に合わせたアドバイスです</p>
+  </header>
+  <div id="main-card"></div>
+  <div class="radar-wrap">
+    <div class="radar-lbl">コンディションマップ</div>
+    <div class="radar-canvas-wrap"><canvas id="radar"></canvas></div>
+  </div>
+  <div class="score-row" id="score-row"></div>
+  <p class="score-hint">各レンジャーのチェック数を5点満点に換算して表示</p>
+  <div>
+    <p class="other-lbl">その他の傾向</p>
+    <div id="other-cards"></div>
+  </div>
+  <div class="btn-area">
+    <button class="btn-secondary" onclick="resetQuiz()">もう一度やり直す</button>
+  </div>
+  <footer class="footer">
+    <p class="footer-text">働くカラダ創り部<br>部長：さわこま</p>
+  </footer>
+</section>
 
 </main>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
-/* SVGアイコン定義 */
-const ICONS = {
-  moon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>`,
-  books: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4m0 1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1z"/><path d="M9 4m0 1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1z"/><path d="M5 8h4"/><path d="M9 16h4"/><path d="M13.803 4.56l2.184-.53 5.253 12.942-2.184.53z"/><path d="M14.42 12.368l2.184-.53"/></svg>`,
-  briefcase: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-14a2 2 0 0 1-2-2z"/><path d="M8 7v-2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></svg>`,
-  clock: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l2.5 2.5"/></svg>`,
-  diamond: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13-10-13z"/><path d="M11 3l-4 6h10l-4-6"/><path d="M6 9l6 10 6-10"/></svg>`,
-  check: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>`,
-  info: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>`
-};
+const CHECK = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>`;
+
+function rangerSVG(color, dark, letter, isHeart) {
+  const heart = isHeart ? `<path d="M34 12 Q40 6 46 12 Q52 18 40 24 Q28 18 34 12Z" fill="#fff" opacity=".22"/>` : `<path d="M25 16 Q40 8 55 16" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+  return `<svg width="72" height="100" viewBox="0 0 80 110" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="40" cy="106" rx="22" ry="4" fill="#c9b99a" opacity=".4"/>
+  <rect x="29" y="78" width="10" height="22" rx="5" fill="${dark}"/>
+  <rect x="41" y="78" width="10" height="22" rx="5" fill="${dark}"/>
+  <rect x="27" y="94" width="14" height="10" rx="4" fill="#fff"/>
+  <rect x="39" y="94" width="14" height="10" rx="4" fill="#fff"/>
+  <rect x="22" y="48" width="36" height="34" rx="10" fill="${color}"/>
+  <rect x="22" y="72" width="36" height="7" rx="3" fill="#fff"/>
+  <rect x="36" y="73" width="8" height="5" rx="2" fill="${dark}"/>
+  <rect x="8" y="50" width="14" height="8" rx="4" fill="${color}"/>
+  <rect x="58" y="50" width="14" height="8" rx="4" fill="${color}"/>
+  <rect x="5" y="55" width="12" height="9" rx="4" fill="#fff"/>
+  <rect x="63" y="55" width="12" height="9" rx="4" fill="#fff"/>
+  <rect x="35" y="42" width="10" height="10" rx="3" fill="${color}"/>
+  <ellipse cx="40" cy="30" rx="22" ry="24" fill="${color}"/>
+  <path d="M20 28 Q40 18 60 28 Q60 36 40 38 Q20 36 20 28Z" fill="#111" opacity=".82"/>
+  <path d="M24 27 Q33 21 46 25" stroke="#fff" stroke-width="1.5" fill="none" opacity=".35" stroke-linecap="round"/>
+  ${heart}
+  <rect x="32" y="56" width="16" height="14" rx="3" fill="${dark}"/>
+  <text x="40" y="67" text-anchor="middle" font-size="10" font-weight="700" fill="#fff" font-family="sans-serif">${letter}</text>
+</svg>`;
+}
 
 const cats = [
   {
-    id: 'body',
-    icon: 'moon',
-    label: '疲弊タイプ',
-    sub: '身体のサイン',
-    priority: 1,
-    items: [
-      '朝から疲れている',
-      '休日が寝て終わる',
-      '午後になると集中力が落ちる',
-      '休んでも回復しない',
-      '「年齢だから仕方ない」と思っている'
-    ],
-    desc: 'カラダのコンディションが土台にあります。まずここを整えることが、他のすべての出発点です。疲れない身体をつくる仕組みを知ることで、生活全体が変わり始めます。',
-    note: '身体の疲弊が見られる場合、他の課題は土台が整ってから取り組むと効果が出やすくなります。'
+    id:'aka', color:'#d9392b', dark:'#b8291e', letter:'A', heart:false,
+    label:'アカレンジャー', theme:'カラダ', priority:1,
+    items:['睡眠時間は6時間以下','朝起きた時から疲れてる','食生活が乱れてる','いつも肩凝りや疲労感がある','ささいな事でもイライラする'],
+    copy:'一旦止まれ、カラダ創りの基礎から！',
+    sub:'エネルギー不足タイプ',
+    type:'エネルギー不足・回復が追いついていない',
+    advice:'まずは休むこと。睡眠・運動・食事で体の土台を整えよう！',
+    keywords:['回復','休息','土台づくり'],
   },
   {
-    id: 'action',
-    icon: 'books',
-    label: '頑張り方迷子タイプ',
-    sub: '行動のパターン',
-    priority: 2,
-    items: [
-      '本やYouTubeで勉強している',
-      '良いと言われることは試している',
-      'でも続かない',
-      '自分に合う方法が分からない',
-      '情報が多すぎて混乱している'
-    ],
-    desc: '努力の方向性が定まっていない状態です。自分の身体に合ったロジックを見つけることで、同じ努力が確実な成果につながるようになります。',
-    note: 'カラダのサインが落ち着いてきたら、自分に合う行動の仕組みをつくっていきましょう。'
+    id:'ki', color:'#e0a715', dark:'#c49010', letter:'K', heart:false,
+    label:'キレンジャー', theme:'生活リズム', priority:2,
+    items:['起床と就寝時間がバラバラ','ほとんど運動をしていない','つい暴飲暴食をしてしまう','常に時間が無い','そんなに疲れていないと思う'],
+    copy:'要注意！バランス、整えろ！',
+    sub:'バランス崩れタイプ',
+    type:'なんとか頑張れてるけど、このままだと崩れそう',
+    advice:'生活リズムと自律神経のバランスを整えることがカギ！',
+    keywords:['バランス','自覚','自律神経'],
   },
   {
-    id: 'work',
-    icon: 'briefcase',
-    label: '成果停滞タイプ',
-    sub: '仕事のパフォーマンス',
-    priority: 3,
-    items: [
-      '頑張っているのに評価されない',
-      'もっと力を発揮できる気がする',
-      '成果が安定しない',
-      '波が激しい',
-      'モチベーション頼みになっている'
-    ],
-    desc: 'コンディションの土台が安定すると、仕事のパフォーマンスのムラが減っていきます。再現性のある働き方が、安定した成果への近道です。',
-    note: '身体と行動の仕組みが整うと、仕事の成果に直結してきます。'
+    id:'ao', color:'#2a7bc8', dark:'#185ea0', letter:'R', heart:false,
+    label:'アオレンジャー', theme:'エネルギー管理', priority:3,
+    items:['何もしていないのに1日が終わる','自分だけ進めてない気がする','休んでいてもやることが頭から離れない','やる事が多すぎて困る','もっと頑張れると思う'],
+    copy:'がんばりすぎ注意！力を抜くのもスキルだ！',
+    sub:'頑張りすぎタイプ',
+    type:'真面目で頑張り屋さん。オーバーワーク気味',
+    advice:'意識的に「休む・ゆるめる」時間を作って、自分を整理しよう！',
+    keywords:['ゆるめる','手放す','整える'],
   },
   {
-    id: 'life',
-    icon: 'clock',
-    label: '将来不安タイプ',
-    sub: '人生・将来への不安',
-    priority: 4,
-    items: [
-      'このまま歳を取りたくない',
-      '今の働き方を続けられる気がしない',
-      '本当はもっと挑戦したい',
-      '時間もお金も余裕がない',
-      '何を変えればいいのか分からない'
-    ],
-    desc: '将来への漠然とした不安は、「何から変えればいいか分からない」という状態から来ています。一つひとつ土台を整えていくことで、視界が開けてきます。',
-    note: '将来への不安は、日々のコンディションが整うことで自然と和らいでいくことが多いです。'
+    id:'mido', color:'#2a9a4e', dark:'#1a7a3a', letter:'M', heart:false,
+    label:'ミドレンジャー', theme:'行動・習慣', priority:4,
+    items:['目標を立てても行動に移せない','時間管理が苦手','良いと言われたらついやりたくなる','新しい事にトライをするのが好き','1つの事に集中できない'],
+    copy:'いい感じ！その調子でキープだ！',
+    sub:'安定キープタイプ',
+    type:'カラダの調子が安定していて、元気に働けている',
+    advice:'目標達成の習慣を身に付けて、さらにパフォーマンスを上げよう！',
+    keywords:['安定','継続','パフォーマンス'],
   },
   {
-    id: 'growth',
-    icon: 'diamond',
-    label: '成長欲求タイプ',
-    sub: '理想・成長への意欲',
-    priority: 5,
-    items: [
-      '自分をもっと成長させたい',
-      '再現性を身につけたい',
-      '人に教えられるようになりたい',
-      'ロジックで説明できるようになりたい',
-      '根拠がある自信が欲しい'
-    ],
-    desc: '高い意欲と明確な方向性をすでにお持ちです。再現性とロジックを武器にすることで、自分だけでなく周りにも影響を与えられる存在になれます。',
-    note: 'この段階まで来たら、学びを体系化して人に伝える力を磨いていきましょう。'
+    id:'pink', color:'#d45a85', dark:'#b5406a', letter:'P', heart:true,
+    label:'ピンクレンジャー', theme:'感性・気づき', priority:5,
+    items:['不調の時はしっかり休む','毎日運動をしている','朝からスッキリ元気に起きられる','理想のカラダがキープできている','美味しくご飯が食べられている'],
+    copy:'見えない不調に気づけるあなた！',
+    sub:'感度・気づきタイプ',
+    type:'カラダのサインに敏感で、気づく力が高い',
+    advice:'今の自分を信じて、自分の取扱説明書を完成させよう！',
+    keywords:['セルフコンディション','再現性'],
   }
 ];
 
 const checks = {};
 cats.forEach(c => { checks[c.id] = new Set(); });
-const TOTAL = cats.reduce((a, c) => a + c.items.length, 0);
+const TOTAL = cats.reduce((a,c) => a + c.items.length, 0);
 
 function buildSections() {
   const el = document.getElementById('sections');
@@ -377,168 +259,172 @@ function buildSections() {
     const sec = document.createElement('div');
     sec.className = 'section';
     sec.innerHTML = `
-      <div class="sec-header">
-        <div class="sec-icon">${ICONS[cat.icon]}</div>
-        <div class="sec-info">
-          <div class="sec-name">${cat.label}</div>
-          <div class="sec-sub">${cat.sub}</div>
-        </div>
-        <div class="sec-count" id="cnt-${cat.id}">0 / ${cat.items.length}</div>
+      <div class="sec-hdr">
+        <span class="sec-theme">${cat.theme}</span>
+        <span class="sec-count" id="cnt-${cat.id}">0 / ${cat.items.length}</span>
       </div>
-      <div class="items" id="items-${cat.id}"></div>
-    `;
+      <div class="items" id="items-${cat.id}"></div>`;
     el.appendChild(sec);
     const itemsEl = document.getElementById('items-' + cat.id);
     cat.items.forEach((txt, i) => {
       const div = document.createElement('div');
       div.className = 'item';
-      div.setAttribute('role', 'checkbox');
-      div.setAttribute('aria-checked', 'false');
-      div.setAttribute('tabindex', '0');
-      div.innerHTML = `<div class="checkbox" id="cb-${cat.id}-${i}">${ICONS.check}</div><div class="item-text">${txt}</div>`;
-      div.onclick = () => toggle(cat.id, i, div);
-      div.onkeydown = e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(cat.id, i, div); } };
+      div.setAttribute('role','checkbox');
+      div.setAttribute('aria-checked','false');
+      div.setAttribute('tabindex','0');
+      div.innerHTML = `<div class="cb" id="cb-${cat.id}-${i}">${CHECK}</div><div class="item-text">${txt}</div>`;
+      div.onclick = () => toggle(cat, i, div);
+      div.onkeydown = e => { if(e.key===' '||e.key==='Enter'){e.preventDefault();toggle(cat,i,div);} };
       itemsEl.appendChild(div);
     });
   });
 }
 
-function toggle(catId, idx, divEl) {
-  const s = checks[catId];
-  if (s.has(idx)) s.delete(idx); else s.add(idx);
-  const cb = document.getElementById('cb-' + catId + '-' + idx);
-  cb.classList.toggle('on', s.has(idx));
-  divEl.setAttribute('aria-checked', s.has(idx) ? 'true' : 'false');
-  const cat = cats.find(c => c.id === catId);
-  document.getElementById('cnt-' + catId).textContent = s.size + ' / ' + cat.items.length;
+function toggle(cat, idx, divEl) {
+  const s = checks[cat.id];
+  if(s.has(idx)) s.delete(idx); else s.add(idx);
+  const cb = document.getElementById('cb-' + cat.id + '-' + idx);
+  if(s.has(idx)){
+    cb.style.background = cat.color;
+    cb.style.borderColor = cat.color;
+    cb.querySelector('svg').style.color = '#fff';
+  } else {
+    cb.style.background = '#fff';
+    cb.style.borderColor = '';
+    cb.querySelector('svg').style.color = 'transparent';
+  }
+  divEl.setAttribute('aria-checked', s.has(idx)?'true':'false');
+  document.getElementById('cnt-' + cat.id).textContent = s.size + ' / ' + cat.items.length;
   updateProgress();
 }
 
 function updateProgress() {
   let total = 0;
   Object.values(checks).forEach(s => total += s.size);
-  const pct = Math.round(total / TOTAL * 100);
-  const fill = document.getElementById('prog');
-  fill.style.width = pct + '%';
-  fill.parentElement.setAttribute('aria-valuenow', total);
-  document.getElementById('prog-label').textContent = total + ' / ' + TOTAL;
+  document.getElementById('prog').style.width = Math.round(total/TOTAL*100) + '%';
+  document.getElementById('prog-lbl').textContent = total + ' / ' + TOTAL;
 }
 
 function getPriority() {
-  for (let p = 1; p <= 5; p++) {
-    const cat = cats.find(c => c.priority === p);
-    if (checks[cat.id].size >= 2) return cat;
+  for(let p=1;p<=5;p++){
+    const cat = cats.find(c=>c.priority===p);
+    if(checks[cat.id].size >= 2) return cat;
   }
-  const ranked = cats.map(c => ({
-    cat: c,
-    pct: c.items.length > 0 ? checks[c.id].size / c.items.length : 0
-  })).sort((a, b) => b.pct - a.pct || a.cat.priority - b.cat.priority);
-  return ranked[0].cat;
+  return cats.map(c=>({cat:c,pct:checks[c.id].size/c.items.length}))
+    .sort((a,b)=>b.pct-a.pct||a.cat.priority-b.cat.priority)[0].cat;
 }
 
 function showResult() {
   document.getElementById('quiz').style.display = 'none';
-  const res = document.getElementById('result');
-  res.style.display = 'block';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.getElementById('result').style.display = 'block';
+  window.scrollTo({top:0,behavior:'smooth'});
 
   const scores = cats.map(c => checks[c.id].size);
-  const pcts = cats.map((c, i) => c.items.length > 0 ? scores[i] / c.items.length : 0);
-  const normalized = pcts.map(p => Math.round(p * 5));
-  const topCat = getPriority();
+  const pcts   = cats.map((c,i) => c.items.length>0 ? scores[i]/c.items.length : 0);
+  const norm   = pcts.map(p => Math.round(p*5));
+  const top    = getPriority();
 
+  /* キーワード */
+  const kwHTML = top.keywords.map(k=>`<span class="ranger-kw">${k}</span>`).join('');
+
+  /* メインカード */
   document.getElementById('main-card').innerHTML = `
-    <div class="main-card">
-      <div class="main-tag">最優先タイプ</div>
-      <div class="main-name">${ICONS[topCat.icon]}${topCat.label}</div>
-      <p class="main-desc">${topCat.desc}</p>
-    </div>
-  `;
+    <div class="ranger-card" style="border-color:${top.color};">
+      <div class="ranger-card-top" style="background:${hexSoft(top.color)};">
+        <div class="ranger-svg-wrap">${rangerSVG(top.color, top.dark, top.letter, top.heart)}</div>
+        <div class="ranger-card-info">
+          <div class="ranger-tag" style="background:${top.color};color:#fff;">${top.label}</div>
+          <div class="ranger-copy" style="color:${top.color};">${top.copy}</div>
+          <div class="ranger-sub">${top.sub}</div>
+        </div>
+      </div>
+      <div class="ranger-body">
+        <div class="ranger-row">
+          <div>
+            <div class="ranger-section-label">タイプ</div>
+            <div class="ranger-section-val">${top.type}</div>
+          </div>
+          <div>
+            <div class="ranger-section-label">キーワード</div>
+            <div class="ranger-kws">${kwHTML}</div>
+          </div>
+        </div>
+        <div class="ranger-advice-row">
+          <div class="ranger-section-label">アドバイス</div>
+          <div class="ranger-section-val">${top.advice}</div>
+        </div>
+      </div>
+    </div>`;
 
-  document.getElementById('priority-note').innerHTML = `
-    ${ICONS.info}
-    <span>${topCat.note}</span>
-  `;
-
+  /* スコアセル */
   const scoreEl = document.getElementById('score-row');
   scoreEl.innerHTML = '';
-  cats.forEach((cat, i) => {
+  cats.forEach((cat,i) => {
     const cell = document.createElement('div');
     cell.className = 'score-cell';
     cell.innerHTML = `
-      <div class="score-cell-label">${ICONS[cat.icon]}<br>${cat.label.replace('タイプ', '')}</div>
-      <div class="score-cell-num">${normalized[i]}</div>
-      <div class="score-cell-max">/ 5</div>
-    `;
+      <div class="score-dot" style="background:${cat.color};"></div>
+      <div class="score-lbl">${cat.label.replace('レンジャー','')}</div>
+      <div class="score-num">${norm[i]}</div>
+      <div class="score-max">/ 5</div>`;
     scoreEl.appendChild(cell);
   });
 
+  /* その他カード */
   const othEl = document.getElementById('other-cards');
   othEl.innerHTML = '';
-  cats
-    .filter(c => c.id !== topCat.id)
-    .sort((a, b) => {
-      const ai = cats.indexOf(a), bi = cats.indexOf(b);
-      return pcts[bi] - pcts[ai];
-    })
+  cats.filter(c=>c.id!==top.id)
+    .sort((a,b)=>pcts[cats.indexOf(b)]-pcts[cats.indexOf(a)])
     .forEach(cat => {
-      const i = cats.indexOf(cat);
-      const pct = Math.round(pcts[i] * 100);
+      const pct = Math.round(pcts[cats.indexOf(cat)]*100);
       const div = document.createElement('div');
       div.className = 'other-card';
       div.innerHTML = `
-        <span class="other-card-icon">${ICONS[cat.icon]}</span>
-        <div class="other-card-name">${cat.label}</div>
-        <div class="other-bar-wrap"><div class="other-bar" style="width:${pct}%"></div></div>
-        <div class="other-pct">${pct}%</div>
-      `;
+        <div class="other-dot" style="background:${cat.color};"></div>
+        <div class="other-name">${cat.label}</div>
+        <div class="other-bar-wrap"><div class="other-bar" style="width:${pct}%;background:${cat.color};opacity:.5;"></div></div>
+        <div class="other-pct">${pct}%</div>`;
       othEl.appendChild(div);
     });
 
-  drawRadar(normalized);
+  drawRadar(norm);
+}
+
+function hexSoft(hex) {
+  /* ベースカラーに白を混ぜた薄い背景色をRGBで生成 */
+  const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},0.08)`;
 }
 
 let radarChart = null;
 function drawRadar(data) {
-  if (radarChart) { radarChart.destroy(); radarChart = null; }
+  if(radarChart){radarChart.destroy();radarChart=null;}
   radarChart = new Chart(document.getElementById('radar'), {
-    type: 'radar',
-    data: {
-      labels: cats.map(c => c.label.replace('タイプ', '')),
-      datasets: [{
-        label: 'スコア',
-        data: data,
-        backgroundColor: 'rgba(201,185,154,.18)',
-        borderColor: '#c9b99a',
-        borderWidth: 1.5,
-        pointBackgroundColor: '#9c856a',
-        pointBorderColor: '#fff',
-        pointBorderWidth: 1.5,
-        pointRadius: 4,
-        pointHoverRadius: 6
+    type:'radar',
+    data:{
+      labels: cats.map(c=>c.label),
+      datasets:[{
+        data,
+        backgroundColor:'rgba(201,185,154,.18)',
+        borderColor:'#c9b99a',
+        borderWidth:1.5,
+        pointBackgroundColor: cats.map(c=>c.color),
+        pointBorderColor:'#fff',
+        pointBorderWidth:1.5,
+        pointRadius:4,
+        pointHoverRadius:6
       }]
     },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        r: {
-          min: 0, max: 5,
-          ticks: {
-            stepSize: 1,
-            color: '#c9b99a',
-            backdropColor: 'transparent',
-            font: { size: 9 }
-          },
-          grid: { color: 'rgba(201,185,154,.3)' },
-          angleLines: { color: 'rgba(201,185,154,.3)' },
-          pointLabels: {
-            font: { size: 11, weight: '500', family: "'Noto Sans JP', sans-serif" },
-            color: '#9c856a'
-          }
-        }
-      }
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{r:{
+        min:0,max:5,
+        ticks:{stepSize:1,color:'#c9b99a',backdropColor:'transparent',font:{size:9}},
+        grid:{color:'rgba(201,185,154,.3)'},
+        angleLines:{color:'rgba(201,185,154,.3)'},
+        pointLabels:{font:{size:10,weight:'500',family:"'Noto Sans JP',sans-serif"},color:'#9c856a'}
+      }}
     }
   });
 }
@@ -546,20 +432,168 @@ function drawRadar(data) {
 function resetQuiz() {
   cats.forEach(c => {
     checks[c.id].clear();
-    c.items.forEach((_, i) => {
-      const cb = document.getElementById('cb-' + c.id + '-' + i);
-      if (cb) cb.classList.remove('on');
-      const item = cb ? cb.parentElement : null;
-      if (item) item.setAttribute('aria-checked', 'false');
+    c.items.forEach((_,i) => {
+      const cb = document.getElementById('cb-'+c.id+'-'+i);
+      if(!cb) return;
+      cb.style.background='#fff'; cb.style.borderColor='';
+      cb.querySelector('svg').style.color='transparent';
+      cb.parentElement.setAttribute('aria-checked','false');
     });
-    document.getElementById('cnt-' + c.id).textContent = '0 / ' + c.items.length;
+    document.getElementById('cnt-'+c.id).textContent = '0 / '+c.items.length;
   });
   updateProgress();
-  document.getElementById('quiz').style.display = 'block';
-  document.getElementById('result').style.display = 'none';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.getElementById('quiz').style.display='block';
+  document.getElementById('result').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
+/* ヒーローバナー：ポーズ付きレンジャー */
+function buildHeroRangers() {
+  const wrap = document.getElementById('hero-rangers');
+  if (!wrap) return;
+
+  // 各レンジャーのポーズSVG（viewBox="0 0 80 120"統一）
+  const poses = [
+    // アカ：片手を上げてガッツポーズ
+    (c,d,l) => `<svg width="58" height="80" viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="40" cy="116" rx="20" ry="3.5" fill="#c9b99a" opacity=".4"/>
+      <rect x="30" y="84" width="10" height="24" rx="5" fill="${d}"/>
+      <rect x="42" y="84" width="10" height="24" rx="5" fill="${d}"/>
+      <rect x="28" y="100" width="13" height="9" rx="4" fill="#fff"/>
+      <rect x="40" y="100" width="13" height="9" rx="4" fill="#fff"/>
+      <rect x="22" y="52" width="36" height="36" rx="10" fill="${c}"/>
+      <rect x="22" y="78" width="36" height="7" rx="3" fill="#fff"/>
+      <rect x="36" y="79" width="8" height="5" rx="2" fill="${d}"/>
+      <!-- 左腕：まっすぐ下 -->
+      <rect x="8" y="54" width="14" height="9" rx="4" fill="${c}"/>
+      <rect x="5" y="60" width="12" height="9" rx="4" fill="#fff"/>
+      <!-- 右腕：大きく上げる -->
+      <rect x="58" y="32" width="9" height="24" rx="4" fill="${c}" transform="rotate(-30 62 32)"/>
+      <rect x="62" y="20" width="11" height="11" rx="5" fill="#fff"/>
+      <rect x="35" y="46" width="10" height="10" rx="3" fill="${c}"/>
+      <ellipse cx="40" cy="30" rx="20" ry="22" fill="${c}"/>
+      <path d="M22 28 Q40 18 58 28 Q58 36 40 38 Q22 36 22 28Z" fill="#111" opacity=".82"/>
+      <path d="M26 27 Q34 21 48 25" stroke="#fff" stroke-width="1.5" fill="none" opacity=".35" stroke-linecap="round"/>
+      <path d="M27 17 Q40 9 53 17" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <rect x="33" y="60" width="14" height="13" rx="3" fill="${d}"/>
+      <text x="40" y="71" text-anchor="middle" font-size="9" font-weight="700" fill="#fff" font-family="sans-serif">${l}</text>
+    </svg>`,
+
+    // キ：足を広げて仁王立ち・両手腰
+    (c,d,l) => `<svg width="58" height="80" viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="40" cy="116" rx="20" ry="3.5" fill="#c9b99a" opacity=".4"/>
+      <rect x="27" y="84" width="10" height="24" rx="5" fill="${d}" transform="rotate(8 32 84)"/>
+      <rect x="43" y="84" width="10" height="24" rx="5" fill="${d}" transform="rotate(-8 48 84)"/>
+      <rect x="25" y="100" width="13" height="9" rx="4" fill="#fff" transform="rotate(8 31 105)"/>
+      <rect x="42" y="100" width="13" height="9" rx="4" fill="#fff" transform="rotate(-8 48 105)"/>
+      <rect x="22" y="52" width="36" height="36" rx="10" fill="${c}"/>
+      <rect x="22" y="78" width="36" height="7" rx="3" fill="#fff"/>
+      <rect x="36" y="79" width="8" height="5" rx="2" fill="${d}"/>
+      <!-- 両腕：腰に当てる -->
+      <rect x="6" y="60" width="16" height="8" rx="4" fill="${c}" transform="rotate(30 14 64)"/>
+      <rect x="4" y="65" width="12" height="9" rx="4" fill="#fff" transform="rotate(30 10 69)"/>
+      <rect x="58" y="60" width="16" height="8" rx="4" fill="${c}" transform="rotate(-30 66 64)"/>
+      <rect x="64" y="65" width="12" height="9" rx="4" fill="#fff" transform="rotate(-30 70 69)"/>
+      <rect x="35" y="46" width="10" height="10" rx="3" fill="${c}"/>
+      <ellipse cx="40" cy="30" rx="20" ry="22" fill="${c}"/>
+      <path d="M22 28 Q40 18 58 28 Q58 36 40 38 Q22 36 22 28Z" fill="#111" opacity=".82"/>
+      <path d="M26 27 Q34 21 48 25" stroke="#fff" stroke-width="1.5" fill="none" opacity=".35" stroke-linecap="round"/>
+      <path d="M27 17 Q40 9 53 17" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <rect x="33" y="60" width="14" height="13" rx="3" fill="${d}"/>
+      <text x="40" y="71" text-anchor="middle" font-size="9" font-weight="700" fill="#fff" font-family="sans-serif">${l}</text>
+    </svg>`,
+
+    // ミド：あぐらをかいて座る
+    (c,d,l) => `<svg width="58" height="80" viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="40" cy="112" rx="26" ry="5" fill="#c9b99a" opacity=".4"/>
+      <!-- あぐら足 -->
+      <ellipse cx="27" cy="102" rx="13" ry="8" fill="${d}"/>
+      <ellipse cx="53" cy="102" rx="13" ry="8" fill="${d}"/>
+      <ellipse cx="40" cy="105" rx="10" ry="6" fill="${c}"/>
+      <!-- ブーツ -->
+      <ellipse cx="18" cy="107" rx="9" ry="6" fill="#fff"/>
+      <ellipse cx="62" cy="107" rx="9" ry="6" fill="#fff"/>
+      <rect x="22" y="62" width="36" height="34" rx="10" fill="${c}"/>
+      <rect x="22" y="86" width="36" height="7" rx="3" fill="#fff"/>
+      <rect x="36" y="87" width="8" height="5" rx="2" fill="${d}"/>
+      <!-- 腕：ひざの上に乗せる -->
+      <rect x="6" y="72" width="16" height="8" rx="4" fill="${c}" transform="rotate(40 14 76)"/>
+      <rect x="3" y="80" width="12" height="9" rx="5" fill="#fff"/>
+      <rect x="58" y="72" width="16" height="8" rx="4" fill="${c}" transform="rotate(-40 66 76)"/>
+      <rect x="65" y="80" width="12" height="9" rx="5" fill="#fff"/>
+      <rect x="35" y="56" width="10" height="10" rx="3" fill="${c}"/>
+      <ellipse cx="40" cy="40" rx="20" ry="22" fill="${c}"/>
+      <path d="M22 38 Q40 28 58 38 Q58 46 40 48 Q22 46 22 38Z" fill="#111" opacity=".82"/>
+      <path d="M26 37 Q34 31 48 35" stroke="#fff" stroke-width="1.5" fill="none" opacity=".35" stroke-linecap="round"/>
+      <path d="M27 27 Q40 19 53 27" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <rect x="33" y="70" width="14" height="13" rx="3" fill="${d}"/>
+      <text x="40" y="81" text-anchor="middle" font-size="9" font-weight="700" fill="#fff" font-family="sans-serif">${l}</text>
+    </svg>`,
+
+    // アオ：片足を少し上げてキック気味
+    (c,d,l) => `<svg width="58" height="80" viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="38" cy="116" rx="20" ry="3.5" fill="#c9b99a" opacity=".4"/>
+      <!-- 左足：まっすぐ立つ -->
+      <rect x="28" y="84" width="10" height="24" rx="5" fill="${d}"/>
+      <rect x="26" y="100" width="13" height="9" rx="4" fill="#fff"/>
+      <!-- 右足：前に上げる -->
+      <rect x="42" y="82" width="10" height="20" rx="5" fill="${d}" transform="rotate(-28 47 82)"/>
+      <rect x="52" y="90" width="13" height="9" rx="4" fill="#fff" transform="rotate(-28 58 94)"/>
+      <rect x="22" y="52" width="36" height="36" rx="10" fill="${c}"/>
+      <rect x="22" y="78" width="36" height="7" rx="3" fill="#fff"/>
+      <rect x="36" y="79" width="8" height="5" rx="2" fill="${d}"/>
+      <!-- 左腕：前に伸ばす -->
+      <rect x="4" y="57" width="18" height="8" rx="4" fill="${c}"/>
+      <rect x="2" y="55" width="12" height="11" rx="5" fill="#fff"/>
+      <!-- 右腕：後ろに引く -->
+      <rect x="58" y="57" width="14" height="8" rx="4" fill="${c}" transform="rotate(20 65 61)"/>
+      <rect x="64" y="60" width="12" height="9" rx="4" fill="#fff" transform="rotate(20 70 64)"/>
+      <rect x="35" y="46" width="10" height="10" rx="3" fill="${c}"/>
+      <ellipse cx="40" cy="30" rx="20" ry="22" fill="${c}"/>
+      <path d="M22 28 Q40 18 58 28 Q58 36 40 38 Q22 36 22 28Z" fill="#111" opacity=".82"/>
+      <path d="M26 27 Q34 21 48 25" stroke="#fff" stroke-width="1.5" fill="none" opacity=".35" stroke-linecap="round"/>
+      <path d="M27 17 Q40 9 53 17" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <rect x="33" y="60" width="14" height="13" rx="3" fill="${d}"/>
+      <text x="40" y="71" text-anchor="middle" font-size="9" font-weight="700" fill="#fff" font-family="sans-serif">${l}</text>
+    </svg>`,
+
+    // ピンク：ひざを曲げてかわいくポーズ・片手を頬に
+    (c,d,l) => `<svg width="58" height="80" viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="40" cy="116" rx="20" ry="3.5" fill="#c9b99a" opacity=".4"/>
+      <rect x="29" y="84" width="10" height="20" rx="5" fill="${d}"/>
+      <rect x="41" y="84" width="10" height="20" rx="5" fill="${d}"/>
+      <!-- 両足を内向きにそろえる -->
+      <rect x="27" y="97" width="13" height="9" rx="4" fill="#fff" transform="rotate(6 33 101)"/>
+      <rect x="40" y="97" width="13" height="9" rx="4" fill="#fff" transform="rotate(-6 46 101)"/>
+      <rect x="22" y="52" width="36" height="36" rx="10" fill="${c}"/>
+      <rect x="22" y="78" width="36" height="7" rx="3" fill="#fff"/>
+      <rect x="36" y="79" width="8" height="5" rx="2" fill="${d}"/>
+      <!-- 左腕：まっすぐ下 -->
+      <rect x="8" y="54" width="14" height="9" rx="4" fill="${c}"/>
+      <rect x="5" y="60" width="12" height="9" rx="4" fill="#fff"/>
+      <!-- 右腕：頬に手を当てる -->
+      <rect x="55" y="40" width="9" height="20" rx="4" fill="${c}" transform="rotate(-50 59 50)"/>
+      <rect x="52" y="30" width="11" height="11" rx="5" fill="#fff"/>
+      <rect x="35" y="46" width="10" height="10" rx="3" fill="${c}"/>
+      <ellipse cx="40" cy="30" rx="20" ry="22" fill="${c}"/>
+      <path d="M22 28 Q40 18 58 28 Q58 36 40 38 Q22 36 22 28Z" fill="#111" opacity=".82"/>
+      <path d="M26 27 Q34 21 48 25" stroke="#fff" stroke-width="1.5" fill="none" opacity=".35" stroke-linecap="round"/>
+      <!-- ピンクはハート飾り -->
+      <path d="M34 12 Q40 6 46 12 Q52 18 40 24 Q28 18 34 12Z" fill="#fff" opacity=".22"/>
+      <rect x="33" y="60" width="14" height="13" rx="3" fill="${d}"/>
+      <text x="40" y="71" text-anchor="middle" font-size="9" font-weight="700" fill="#fff" font-family="sans-serif">${l}</text>
+    </svg>`
+  ];
+
+  cats.forEach((cat, i) => {
+    const div = document.createElement('div');
+    div.className = 'hero-ranger';
+    div.innerHTML = poses[i](cat.color, cat.dark, cat.letter);
+    wrap.appendChild(div);
+  });
+}
+
+buildHeroRangers();
 buildSections();
 </script>
 </body>
